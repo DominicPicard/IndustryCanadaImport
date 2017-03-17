@@ -1,0 +1,29 @@
+﻿<Window x:Class="IndustryCanadaImport.CharConverterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IndustryCanadaImport"
+        mc:Ignorable="d"
+        Title="Convert Symbol" Height="140" Width="300" Icon="Resources/converter.ico" Background="WhiteSmoke" WindowStyle="SingleBorderWindow" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner" Topmost="True">
+    <Grid Margin="5,10,5,5" VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Text="Select the symbol that would replace the one highlighted in the box below:" TextWrapping="Wrap" Foreground="DimGray" Margin="2"/>
+        <RichTextBox Grid.Row="1" IsReadOnly="True" Margin="2" FontSize="14">
+        <FlowDocument>
+            <Paragraph Name="DisplayString" TextAlignment="Center"/>
+        </FlowDocument>    
+        </RichTextBox>
+        <ComboBox Grid.Row="2" HorizontalAlignment="Left" Width="150" Margin="2"
+                  HorizontalContentAlignment="Center"
+                  ItemsSource="{Binding AvailableSymbols, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedSymbol,UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Grid.Row="2" Content="OK" HorizontalAlignment="Right" Width="100" Margin="2" Click="Ok_OnClick"/>
+    </Grid>
+</Window>

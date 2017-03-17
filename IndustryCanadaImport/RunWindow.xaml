@@ -1,0 +1,84 @@
+﻿<Window x:Class="IndustryCanadaImport.RunWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IndustryCanadaImport"
+        mc:Ignorable="d"
+        Title="Upload Database" Height="400" Width="500" Icon="Resources/upload.ico" Closing="RunWindow_OnClosing">
+    <Grid>
+
+        <Grid Visibility="{Binding IcExtractInProgress, Converter={StaticResource VisibilityConverter}}" Background="WhiteSmoke">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="IC database download in  progress" Foreground="DimGray" HorizontalAlignment="Center"/>
+                <ProgressBar IsIndeterminate="True" Width="200" Margin="5" Height="12"/>
+            </StackPanel>
+        </Grid>
+
+
+        <Grid Visibility="{Binding IcExtractInProgress, Converter={StaticResource NotVisibilityConverter}}" Background="WhiteSmoke">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
+            <GroupBox BorderBrush="DimGray" Grid.Row="0" Margin="5">
+                <GroupBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Copy to Clipboard" Click="CopyConsoleToClipboard"/>
+                    </ContextMenu>
+                </GroupBox.ContextMenu>
+                <GroupBox.Header>
+                    <TextBlock Text="Console" Style="{StaticResource GroupBoxHeader}"/>
+                </GroupBox.Header>
+                
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <ItemsControl HorizontalContentAlignment="Left"
+                              ItemsSource="{Binding ConsoleMessages,UpdateSourceTrigger=PropertyChanged}">
+                        
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Message,UpdateSourceTrigger=PropertyChanged}" FontFamily="Lucida Console">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <!--TODO find how to set enum in DataTrigger-->
+                                                <DataTrigger Binding="{Binding MessageType}" Value="0">
+                                                    <Setter Property="Foreground" Value="DimGray"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MessageType}" Value="1">
+                                                    <Setter Property="Foreground" Value="DarkKhaki"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MessageType}" Value="2">
+                                                    <Setter Property="Foreground" Value="Crimson"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+            </GroupBox>
+            
+            <StackPanel Grid.Row="1">
+                <ProgressBar Style="{StaticResource ProgressBarStyle}" 
+                             Maximum="{Binding TableProgressBarMax,UpdateSourceTrigger=PropertyChanged}" 
+                             Value="{Binding TableProgressBarValue,UpdateSourceTrigger=PropertyChanged}"
+                             />
+                <ProgressBar Style="{StaticResource ProgressBarStyle}"
+                             Maximum="{Binding TotalProgressBarMax,UpdateSourceTrigger=PropertyChanged}" 
+                             Value="{Binding TotalProgressBarValue,UpdateSourceTrigger=PropertyChanged}"
+                             />
+                <Border BorderThickness="0,1,0,0" BorderBrush="DimGray" Background="DarkGray">
+                    <TextBlock Text="{Binding StatusText,UpdateSourceTrigger=PropertyChanged}" Foreground="WhiteSmoke" Margin="5,0,0,0"/>
+                </Border>
+            </StackPanel>
+            
+        </Grid>
+        
+    </Grid>
+</Window>
+
